@@ -17,6 +17,11 @@ public class KMeans implements Distance{
     ArrayList<ArrayList<Integer>> groupIndices;
 
 
+    /**
+     * Constructeur de l'algorithme de KMeans
+     * @param _ng nombre de groupes a créer
+     * @param donnees pixel d'une image en fonction des coordonnées en x et y
+     */
     public KMeans(int _ng, double[][] donnees){
         this.ng = _ng;
         this.donnees = donnees;
@@ -24,17 +29,31 @@ public class KMeans implements Distance{
     }
 
 
-    // Récupère le tableau de centroides
+    /**
+     * Récupère la tableau des centroides (coords x et y)
+     * @return le tableau des centroides
+     */
     public double[][] getCentroids() {
         return centroids;
     }
 
     // Méthode qui retourne une liste contenant chacune
+
+    /**
+     * Retourne une liste de groupes contenant l'indice du tableau de données ou son localisé les coordonnées d'un pixel
+     * Ex : Group1 => 2, 5. Implique que l'indice 2 et 5 du tableau de données appartienne au groupe 1
+     * @return la liste de groupes d'indices
+     */
     public ArrayList<ArrayList<Integer>> getGroupIndices() {
         return groupIndices;
     }
 
-    // Lance l'algorithme de kMeans
+
+
+
+    /**
+     * Méthode qui lance l'algorithme de kMeans
+     */
     public void kMeans(){
         Random random = new Random();
         // Initialisation des centroïdes
@@ -72,7 +91,6 @@ public class KMeans implements Distance{
 
                 // Supprime l'indice s'il est présent dans tous les groupes d'indices
                 for(ArrayList<Integer> liste : groupIndices){
-                    System.out.println(liste);
                     for(int val=0; val < liste.size(); val++){
                         if(liste.get(val) == indice){
                             liste.remove(liste.get(val));
@@ -108,7 +126,13 @@ public class KMeans implements Distance{
         }
     }
 
-    // Récupère l'indice du centroide le plus proche de la donnée courante
+
+
+    /**
+     * Récupère l'indice du centroide le plus proche de la donnée courante
+     * @param donnee coordonnées courantes
+     * @return l'indice du centroide le plus proche des coordonnées présente dans le tableau donnée
+     */
     public int indiceCentroidePlusProche(double[] donnee){
         int indice = 0;
         double distanceMin = Double.MAX_VALUE;
@@ -126,7 +150,13 @@ public class KMeans implements Distance{
         return indice;
     }
 
-    // Calcul la distance entre deux points grâce à leur coordonnées x et y
+
+
+    /**
+     * Calcul la distance entre deux points grâce à leur coordonnées x et y
+     * @param tab Contient le tableau de données
+     * @return un tableau d'entier du numéro du cluster (groupe)
+     */
     @Override
     public int[] calculerDistance(double[][] tab) {
         double result = 0;
@@ -139,7 +169,13 @@ public class KMeans implements Distance{
 
 
 
-    // Recalcule la valeur du  barycentre
+
+
+    /**
+     * Recalcule la valeur du  barycentre
+     * @param groupe groupe courant
+     * @return
+     */
     public double[] barycentre(ArrayList<double[]> groupe){
         double[] centroid = new double[groupe.get(groupe.size()-1).length];
         // Fais une moyenne
@@ -154,7 +190,7 @@ public class KMeans implements Distance{
         return centroid;
     }
 
-
+    
     // Main pour tester l'algorithme KMeans
     public static void main(String[] args) throws IOException {
 
