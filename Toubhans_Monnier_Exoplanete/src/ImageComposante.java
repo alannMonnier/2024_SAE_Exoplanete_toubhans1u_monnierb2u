@@ -30,12 +30,15 @@ public class ImageComposante {
                     int cRB = 0;
                     if(composante.equals("green")){
                         cRB = color & 0xffff00;
+                        //cRB = Math.round(color + (75/100) * (255-150));
                     }
                     else if(composante.equals("blue")){
                         cRB = color & 0x00ffff;
+                        //cRB = Math.round(color + (75/100) * (255-150));
                     }
                     else{
                         cRB = color & 0xff00ff;
+                        //cRB = Math.round(color + (75/100) * (255-150));
                     }                  
                     
                     copiedImage.setRGB(x, y, cRB);
