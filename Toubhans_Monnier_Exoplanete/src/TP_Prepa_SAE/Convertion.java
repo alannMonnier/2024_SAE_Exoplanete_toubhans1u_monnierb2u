@@ -1,8 +1,7 @@
-//License from project: Apache License 
+package TP_Prepa_SAE;
 
-public class Main {
+public class Convertion {
     public static int[] rgb2lab(int R, int G, int B) {
-        // http://www.brucelindbloom.com
 
         float r, g, b, X, Y, Z, fx, fy, fz, xr, yr, zr;
         float Ls, as, bs;
@@ -67,9 +66,5 @@ public class Main {
         lab[1] = (int) (as + .5);
         lab[2] = (int) (bs + .5);
         return lab;
-    }
-
-    public static void main(String[] args) {
-        System.out.println("H");
     }
 }

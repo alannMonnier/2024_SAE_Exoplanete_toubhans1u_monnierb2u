@@ -1,3 +1,6 @@
+import TP_Prepa_SAE.Image;
+import TP_Prepa_SAE.OutilCouleur;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

@@ -1,3 +1,5 @@
+package TP_Prepa_SAE;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;

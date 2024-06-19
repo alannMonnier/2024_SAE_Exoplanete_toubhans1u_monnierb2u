@@ -1,3 +1,5 @@
+package TP_Prepa_SAE;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class KMeans implements Distance{
+public class KMeans implements ClusteringInterface{
 
     // Nombre de groupes
     private int ng;
@@ -139,7 +139,7 @@ public class KMeans implements Distance{
 
         for(int ind=0; ind < this.centroids.length; ind++){
             double[][] tab = {donnee, centroids[ind]};
-            double distance = this.calculerDistance(tab)[0];
+            double distance = this.cluster(tab)[0];
             // Si valeur trouvé est plus petit que la distance minimale précédente
             if(distance < distanceMin){
                 // Modifie la distance minimale
@@ -158,7 +158,7 @@ public class KMeans implements Distance{
      * @return un tableau d'entier du numéro du cluster (groupe)
      */
     @Override
-    public int[] calculerDistance(double[][] tab) {
+    public int[] cluster(double[][] tab) {
         double result = 0;
         for (int i = 0; i < tab[0].length; i++) {
             // Distance entre deux points
@@ -191,7 +191,7 @@ public class KMeans implements Distance{
     }
 
     
-    // Main pour tester l'algorithme KMeans
+    // TP_Prepa_SAE.Main pour tester l'algorithme KMeans
     public static void main(String[] args) throws IOException {
 
         //double[][] data = {{1, 2}, {5, 4}, {2, 6}, {6, 6}, {3, 3}, {6, 1}};
@@ -202,11 +202,7 @@ public class KMeans implements Distance{
         kmeans.kMeans();
 
         double[][] centroids = kmeans.getCentroids();
-        double moyX = 0;
-        double moyY = 0;
         for (double[] centroid : centroids) {
-            moyX += centroid[0];
-            moyY += centroid[1];
             System.out.println("Centroïde: " + Arrays.toString(centroid));
         }
 

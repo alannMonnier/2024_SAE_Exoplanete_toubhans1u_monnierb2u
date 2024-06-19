@@ -1,9 +1,11 @@
+package TP_Prepa_SAE;
+
 import java.awt.Color;
 
 public class NormeCielab  implements NormeCouleurs{
 
     public double distanceCouleur(Color c1, Color c2){    
-        // Convertion des couleurs
+        // TP_Prepa_SAE.Convertion des couleurs
         int[] lab1 = Convertion.rgb2lab(c1.getRed(), c1.getGreen(), c1.getBlue());
         int[] lab2 = Convertion.rgb2lab(c2.getRed(), c2.getGreen(), c2.getBlue());
 

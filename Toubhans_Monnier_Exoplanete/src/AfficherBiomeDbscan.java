@@ -13,7 +13,7 @@ public class AfficherBiomeDbscan {
     }
 
     /**
-     * Main permettant selon le choix de l'utilisateur d'aficher un biome en particulier sur une carte avec un fond clair
+     * TP_Prepa_SAE.Main permettant selon le choix de l'utilisateur d'aficher un biome en particulier sur une carte avec un fond clair
      * @param args
      */
     public static void main(String args[]){
