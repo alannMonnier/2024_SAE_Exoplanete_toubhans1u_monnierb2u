@@ -25,8 +25,7 @@ public class Main {
             BufferedImage imgFloutee = flou.appliquerFlouGaussien("reducedImage.jpg", 7);
             ImageIO.write(imgFloutee, "jpg", new File("imageFloutee.jpg"));
             System.out.println("Image floue créée.");
-
-            // Extraire la palette de couleurs de l'image floutée
+            
             ColorPaletteExtractor colorPaletteExtractor = new ColorPaletteExtractor("imageFloutee.jpg");
             ArrayList<Color> palette = new ArrayList<>();
             palette.add(new Color(0, 0, 255));
@@ -37,26 +36,22 @@ public class Main {
             palette.add(new Color(255, 165, 0));
             System.out.println("Palette de couleurs extraites : " + 6 + " clusters.");
 
-            // Obtenir les couleurs des pixels de l'image floutée
             CouleurImage couleurImage = new CouleurImage();
             double[][] data = couleurImage.getCouleur("imageFloutee.jpg");
             System.out.println("Couleurs des pixels obtenues.");
 
-            // Effectuer le clustering avec K-means basé sur les couleurs
             System.out.println("Démarrage de KMeans.");
             KMeans kmeans = new KMeans(6, data);
             int[] clusters = kmeans.cluster(data);
             System.out.println("Clustering terminé.");
 
-            // Blanchir l'image de base et réduire la taille
             ImageBlanc imageBlanc = new ImageBlanc();
             BufferedImage imageBlanchie = imageBlanc.rendreBlanc(imgChemin);
             BufferedImage reducedBlanchie = reduceImageResolution(imageBlanchie, scale);
             ImageIO.write(reducedBlanchie, "jpg", new File("imageBlanchie.jpg"));
             System.out.println("Image blanchie et réduite créée.");
 
-            // Colorier l'image blanchie réduite en fonction des clusters (premier passage)
-            BufferedImage reducedBlanchieCopy1 = deepCopy(reducedBlanchie); // Copie pour le premier passage
+            BufferedImage reducedBlanchieCopy1 = deepCopy(reducedBlanchie);
             int width = reducedBlanchieCopy1.getWidth();
             int height = reducedBlanchieCopy1.getHeight();
             int index = 0;
@@ -74,9 +69,9 @@ public class Main {
             }
             System.out.println("Première coloration terminée.");
 
-            // Colorier l'image blanchie réduite en fonction d'un seul biome (deuxième passage)
-            int biomeToColor = 1; // Choix du biome à colorier (par exemple, le biome représenté par le cluster 1)
-            BufferedImage reducedBlanchieCopy2 = deepCopy(reducedBlanchie); // Copie pour le deuxième passage
+
+            int biomeToColor = 1;
+            BufferedImage reducedBlanchieCopy2 = deepCopy(reducedBlanchie);
             int width2 = reducedBlanchieCopy2.getWidth();
             int height2 = reducedBlanchieCopy2.getHeight();
             int index2 = 0;
@@ -86,11 +81,8 @@ public class Main {
                         int clusterIndex = clusters[index2];
                         if (clusterIndex == biomeToColor) {
                             Color color = palette.get(clusterIndex);
-                            reducedBlanchieCopy2.setRGB(x, y, color.getRGB()); // Coloriage avec la couleur du biome choisi
+                            reducedBlanchieCopy2.setRGB(x, y, color.getRGB());
                         }
-                        // Si vous souhaitez laisser les autres biomes non coloriés, vous pouvez ne rien faire dans le else.
-                        // Sinon, vous pouvez ajouter une logique de coloriage pour les autres biomes ici.
-                        // Exemple : else { reducedBlanchieCopy2.setRGB(x, y, Color.WHITE.getRGB()); }
 
                         index2++;
                     } else {
