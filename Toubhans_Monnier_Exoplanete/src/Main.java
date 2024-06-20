@@ -55,28 +55,60 @@ public class Main {
             ImageIO.write(reducedBlanchie, "jpg", new File("imageBlanchie.jpg"));
             System.out.println("Image blanchie et réduite créée.");
 
-            // Colorier l'image blanchie réduite en fonction des clusters
-            int width = reducedBlanchie.getWidth();
-            int height = reducedBlanchie.getHeight();
+            // Colorier l'image blanchie réduite en fonction des clusters (premier passage)
+            BufferedImage reducedBlanchieCopy1 = deepCopy(reducedBlanchie); // Copie pour le premier passage
+            int width = reducedBlanchieCopy1.getWidth();
+            int height = reducedBlanchieCopy1.getHeight();
             int index = 0;
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     if (index < clusters.length) {
                         int clusterIndex = clusters[index];
                         int color = palette.get(clusterIndex).getRGB();
-                        reducedBlanchie.setRGB(x, y, color); // Coloriage
+                        reducedBlanchieCopy1.setRGB(x, y, color); // Coloriage
                         index++;
                     } else {
                         System.out.println(index + " dépasse la taille des clusters.");
                     }
                 }
             }
-            System.out.println("Coloration terminée.");
+            System.out.println("Première coloration terminée.");
 
-            // Restaurer la taille originale de l'image finale
-            BufferedImage finalImage = restoreOriginalResolution(reducedBlanchie, originalImage.getWidth(), originalImage.getHeight());
-            ImageIO.write(finalImage, "jpg", new File("imageFinale.jpg"));
-            System.out.println("Image finale créée.");
+            // Colorier l'image blanchie réduite en fonction d'un seul biome (deuxième passage)
+            int biomeToColor = 1; // Choix du biome à colorier (par exemple, le biome représenté par le cluster 1)
+            BufferedImage reducedBlanchieCopy2 = deepCopy(reducedBlanchie); // Copie pour le deuxième passage
+            int width2 = reducedBlanchieCopy2.getWidth();
+            int height2 = reducedBlanchieCopy2.getHeight();
+            int index2 = 0;
+            for (int y = 0; y < height2; y++) {
+                for (int x = 0; x < width2; x++) {
+                    if (index2 < clusters.length) {
+                        int clusterIndex = clusters[index2];
+                        if (clusterIndex == biomeToColor) {
+                            Color color = palette.get(clusterIndex);
+                            reducedBlanchieCopy2.setRGB(x, y, color.getRGB()); // Coloriage avec la couleur du biome choisi
+                        }
+                        // Si vous souhaitez laisser les autres biomes non coloriés, vous pouvez ne rien faire dans le else.
+                        // Sinon, vous pouvez ajouter une logique de coloriage pour les autres biomes ici.
+                        // Exemple : else { reducedBlanchieCopy2.setRGB(x, y, Color.WHITE.getRGB()); }
+
+                        index2++;
+                    } else {
+                        System.out.println(index2 + " dépasse la taille des clusters.");
+                    }
+                }
+            }
+            System.out.println("Deuxième coloration terminée.");
+
+            // Restaurer la taille originale de l'image finale (première coloration)
+            BufferedImage finalImage1 = restoreOriginalResolution(reducedBlanchieCopy1, originalImage.getWidth(), originalImage.getHeight());
+            ImageIO.write(finalImage1, "jpg", new File("imageFinale1.jpg"));
+            System.out.println("Image finale (première coloration) créée.");
+
+            // Restaurer la taille originale de l'image finale (deuxième coloration)
+            BufferedImage finalImage2 = restoreOriginalResolution(reducedBlanchieCopy2, originalImage.getWidth(), originalImage.getHeight());
+            ImageIO.write(finalImage2, "jpg", new File("imageFinale2.jpg"));
+            System.out.println("Image finale (deuxième coloration) créée.");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,5 +140,12 @@ public class Main {
             }
         }
         return restoredImage;
+    }
+
+    // Méthode pour créer une copie profonde d'une BufferedImage
+    private static BufferedImage deepCopy(BufferedImage image) {
+        BufferedImage copy = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+        copy.setData(image.getData());
+        return copy;
     }
 }
