@@ -8,14 +8,15 @@ import java.io.File;
 import java.io.IOException;
 
 public class ImageBlanc {
-    public void rendreBlanc(String chemin) throws IOException {
+
+    public BufferedImage rendreBlanc(String chemin) throws IOException {
         File f = new File(chemin);
         BufferedImage img = ImageIO.read(f);
 
         int hauteur = img.getHeight();
         int largeur = img.getWidth();
 
-        BufferedImage img_copie = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage img_copie = new BufferedImage(largeur, hauteur, BufferedImage.TYPE_INT_RGB);
         for (int y = 0; y < hauteur; y++) {
             for (int x = 0; x < largeur; x++) {
                 int couleur = img.getRGB(x, y);
@@ -23,7 +24,7 @@ public class ImageBlanc {
 
                 int[] colWhite = new int[3];
                 for (int i = 0; i < colWhite.length; i++) {
-                    colWhite[i] = val[i] + (75 * (255 - val[i]) / 100); // Correctly calculate the color towards white
+                    colWhite[i] = val[i] + (75 * (255 - val[i]) / 100);
                 }
 
                 int white = (colWhite[0] << 16) | (colWhite[1] << 8) | colWhite[2];
@@ -31,10 +32,13 @@ public class ImageBlanc {
             }
         }
 
-        String extension = this.getPartFile(chemin)[1];
-        String nomFichier = this.getPartFile(chemin)[0];
-        boolean ecrit = ImageIO.write(img_copie, extension, new File("Toubhans_Monnier_Exoplanete/image_blanc/" + nomFichier + "_copie_blanche." + extension));
-        System.out.println("Image ecrite ? : " + ecrit);
+        String extension = getPartFile(chemin)[1];
+        String nomFichier = getPartFile(chemin)[0];
+        String cheminSortie = "Toubhans_Monnier_Exoplanete/image_blanc/" + nomFichier + "_copie_blanche." + extension;
+        boolean ecrit = ImageIO.write(img_copie, extension, new File(cheminSortie));
+        System.out.println("Image écrite ? : " + ecrit);
+
+        return img_copie;
     }
 
     public String[] getPartFile(String file) {
@@ -45,6 +49,7 @@ public class ImageBlanc {
 
     public static void main(String[] args) throws IOException {
         ImageBlanc imageBlanc = new ImageBlanc();
-        imageBlanc.rendreBlanc("Toubhans_Monnier_Exoplanete/images_exoplanet/Planete 1.jpg");
+        BufferedImage imageBlanchie = imageBlanc.rendreBlanc("Toubhans_Monnier_Exoplanete/images_flou/Planete_1_floute.jpg");
+        // Vous pouvez utiliser imageBlanchie pour d'autres traitements si nécessaire
     }
 }

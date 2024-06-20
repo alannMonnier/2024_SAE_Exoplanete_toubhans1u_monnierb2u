@@ -1,24 +1,16 @@
-import TP_Prepa_SAE.NormeRedmean;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class DbscanTiers implements ClusteringInterface{
-
-
+public class DbscanTiers implements ClusteringInterface {
     private double eps;
     private int minPts;
     private double[][] data;
     private int[] marques;
 
-    public DbscanTiers(double eps, int minPts){
+    public DbscanTiers(double eps, int minPts) {
         this.eps = eps;
         this.minPts = minPts;
     }
-
-
-
 
     @Override
     public int[] cluster(double[][] data) {
@@ -28,15 +20,14 @@ public class DbscanTiers implements ClusteringInterface{
         marques = new int[data.length];
         // 0 si pas traité -1 si n'appartient pas au cluster
         // Autre valeur correspond numéro de son cluster
-        for(int i=0; i < data.length; i++){
-            // Si le point n'a pas été traitée
-            if(marques[i] == 0){
+        for (int i = 0; i < data.length; i++) {
+            // Si le point n'a pas été traité
+            if (marques[i] == 0) {
                 ArrayList<Integer> v = this.regionQuery(i);
-                if(v.size() >= minPts){
+                if (v.size() >= minPts) {
                     cluster++;
                     this.expandCluster(i, v, cluster);
-                }
-                else{
+                } else {
                     // -1 si appartient pas
                     marques[i] = -1;
                 }
@@ -45,38 +36,36 @@ public class DbscanTiers implements ClusteringInterface{
         return marques;
     }
 
-    public ArrayList<Integer> regionQuery(int indice){
+    public ArrayList<Integer> regionQuery(int indice) {
         ArrayList<Integer> v = new ArrayList<>();
-        for(int i=0; i < data.length; i++){
-            if(i != indice && this.calculerDistance(indice, i) <= eps){
+        for (int i = 0; i < data.length; i++) {
+            if (i != indice && this.calculerDistance(indice, i) <= eps) {
                 v.add(i);
             }
         }
         return v;
     }
 
-
-    public double calculerDistance(int a, int b){
-        NormeRedmean normeRedmean = new NormeRedmean();
+    public double calculerDistance(int a, int b) {
         Color colorA = new Color((int) data[a][0], (int) data[a][1], (int) data[a][2]);
         Color colorB = new Color((int) data[b][0], (int) data[b][1], (int) data[b][2]);
-        return normeRedmean.distanceCouleur(colorA, colorB);
+        return ColorDistance.calculate(colorA, colorB);
     }
 
-
-    public void expandCluster(int indice, ArrayList<Integer> v, int cluster){
-        cluster += indice;
-        for(int i=0; i < v.size(); i++){
-            // Si le point n'a pas été traitée
-            if(marques[i] == 0){
-                marques[i]  = indice;
-                ArrayList<Integer> vi = this.regionQuery(i);
-                if(v.size() > minPts){
+    public void expandCluster(int indice, ArrayList<Integer> v, int cluster) {
+        marques[indice] = cluster;
+        for (int i = 0; i < v.size(); i++) {
+            int point = v.get(i);
+            // Si le point n'a pas été traité
+            if (marques[point] == 0) {
+                marques[point] = cluster;
+                ArrayList<Integer> vi = this.regionQuery(point);
+                if (vi.size() >= minPts) {
                     v.addAll(vi);
                 }
             }
-            if(marques[i] == -1){
-                marques[i] = cluster;
+            if (marques[point] == -1) {
+                marques[point] = cluster;
             }
         }
     }
