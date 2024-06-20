@@ -10,6 +10,7 @@ import java.util.ArrayList;
 /**
  * Classe qui implémente l'algorithme dbscan
  */
+
 public class DbscanBis implements ClusteringInterface{
     private BufferedImage image;
     private int hauteur;
@@ -29,18 +30,21 @@ public class DbscanBis implements ClusteringInterface{
      * @param data : tableau Nobjet * Ncarac, obtenu par la méthode pixelToData
      * @return : un tableau de cluster
      */
+
     public int[] cluster(double[][] data){
+
         int[] cluster = new int[data.length];
+        /**
         for(int i = 0; i < data.length; i++){
-             if(){
+             //if(){
                 ArrayList<Integer> voisinIndex = regionQuery(data, this.eps);
                 if(voisinIndex.size() >= this.min){
-                    expandCluster();
+                   // expandCluster();
                 }
             } else {
                 cluster[i] = -1;
             }
-        }
+        }*/
         return cluster;
     }
 
@@ -50,6 +54,7 @@ public class DbscanBis implements ClusteringInterface{
      * @param index : un élement dans data
      * @param voisin :
      */
+    /**
     public void expandCluster(double[][] data, ArrayList<Integer> voisins, int index, int[] cluster){
         cluster[]
         for(int voisin :  voisins){
@@ -57,7 +62,7 @@ public class DbscanBis implements ClusteringInterface{
                 voisin = regionQuery(voisin, this.eps);
             }
         }
-    }
+    }*/
 
     /**
      *
